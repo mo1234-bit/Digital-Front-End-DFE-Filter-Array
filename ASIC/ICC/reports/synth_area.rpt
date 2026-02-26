@@ -1,0 +1,31 @@
+ 
+****************************************
+Report : area
+Design : FIR_IIR
+Version: G-2012.06-SP2
+Date   : Fri Dec  6 04:12:43 2019
+****************************************
+
+Information: Updating design information... (UID-85)
+Warning: Design 'FIR_IIR' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Library(s) Used:
+
+    NangateOpenCellLibrary_ss0p95vn40c (File: /home/standard_cell_libraries/NangateOpenCellLibrary_PDKv1_3_v2010_12/lib/Front_End/Liberty/NLDM/NangateOpenCellLibrary_ss0p95vn40c.db)
+
+Number of ports:                           75
+Number of nets:                           174
+Number of cells:                            4
+Number of combinational cells:              0
+Number of sequential cells:                 0
+Number of macros:                           0
+Number of buf/inv:                          0
+Number of references:                       4
+
+Combinational area:       77761.110548
+Buf/Inv area:             3236.687945
+Noncombinational area:    62120.042055
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:          139881.152603
+Total area:                 undefined
+1

@@ -1,0 +1,907 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay min
+        -max_paths 10
+Design : FIR_IIR
+Version: G-2012.06-ICC-SP2
+Date   : Thu Feb  7 06:45:25 2019
+****************************************
+
+ * Some/all delay information is back-annotated.
+
+Operating Conditions: worst_low   Library: NangateOpenCellLibrary_ss0p95vn40c
+	Parasitic source    : LPE
+	Parasitic mode      : RealRC
+	Extraction mode     : MIN_MAX
+	Extraction derating : -40/-40/-40
+
+Information: Percent of Arnoldi-based delays =  0.00%
+
+  Startpoint: fractional/FIR/prod_stage_reg_58__1_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_58__1_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.30       0.30
+  fractional/FIR/prod_stage_reg_58__1_/CK (DFF_X1)        0.00       0.30 r
+  fractional/FIR/prod_stage_reg_58__1_/Q (DFF_X1)         0.09       0.40 r
+  fractional/FIR/U13062/ZN (AND2_X1)                      0.03 &     0.43 r
+  fractional/FIR/U175610/Z (BUF_X2)                       0.02 &     0.45 r
+  fractional/FIR/U77486/Z (BUF_X1)                        0.02 &     0.47 r
+  fractional/FIR/U77487/Z (BUF_X1)                        0.02 &     0.49 r
+  fractional/FIR/U77488/Z (BUF_X1)                        0.02 &     0.50 r
+  fractional/FIR/U110176/Z (BUF_X1)                       0.02 &     0.52 r
+  fractional/FIR/U110177/Z (BUF_X1)                       0.02 &     0.54 r
+  fractional/FIR/U110178/Z (BUF_X1)                       0.02 &     0.56 r
+  fractional/FIR/U142883/Z (BUF_X1)                       0.02 &     0.58 r
+  fractional/FIR/U142884/Z (BUF_X1)                       0.02 &     0.60 r
+  fractional/FIR/U142885/Z (BUF_X1)                       0.02 &     0.62 r
+  fractional/FIR/U175609/Z (BUF_X1)                       0.02 &     0.63 r
+  fractional/FIR/U175611/Z (BUF_X1)                       0.02 &     0.65 r
+  fractional/FIR/U46953/Z (BUF_X1)                        0.02 &     0.67 r
+  fractional/FIR/prod_stage_reg_58__1_/D (DFF_X1)         0.00 &     0.67 r
+  data arrival time                                                  0.67
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.31       0.31
+  clock uncertainty                                       0.35       0.66
+  fractional/FIR/prod_stage_reg_58__1_/CK (DFF_X1)        0.00       0.66 r
+  library hold time                                       0.02       0.67
+  data required time                                                 0.67
+  --------------------------------------------------------------------------
+  data required time                                                 0.67
+  data arrival time                                                 -0.67
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: fractional/FIR/prod_stage_reg_70__16_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_70__16_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.26       0.26
+  fractional/FIR/prod_stage_reg_70__16_/CK (DFF_X1)       0.00       0.26 r
+  fractional/FIR/prod_stage_reg_70__16_/Q (DFF_X1)        0.09       0.35 r
+  fractional/FIR/U12693/ZN (AND2_X1)                      0.03 &     0.38 r
+  fractional/FIR/U173911/Z (BUF_X1)                       0.02 &     0.40 r
+  fractional/FIR/U173909/Z (BUF_X1)                       0.02 &     0.42 r
+  fractional/FIR/U141184/Z (BUF_X1)                       0.02 &     0.43 r
+  fractional/FIR/U141183/Z (BUF_X1)                       0.02 &     0.45 r
+  fractional/FIR/U141182/Z (BUF_X1)                       0.02 &     0.47 r
+  fractional/FIR/U108477/Z (BUF_X1)                       0.02 &     0.49 r
+  fractional/FIR/U108476/Z (BUF_X1)                       0.02 &     0.51 r
+  fractional/FIR/U108475/Z (BUF_X1)                       0.02 &     0.53 r
+  fractional/FIR/U75787/Z (BUF_X1)                        0.02 &     0.55 r
+  fractional/FIR/U173910/Z (BUF_X2)                       0.02 &     0.57 r
+  fractional/FIR/U75785/Z (BUF_X1)                        0.02 &     0.58 r
+  fractional/FIR/U75786/Z (BUF_X1)                        0.02 &     0.60 r
+  fractional/FIR/U45986/Z (BUF_X1)                        0.02 &     0.62 r
+  fractional/FIR/prod_stage_reg_70__16_/D (DFF_X1)        0.00 &     0.62 r
+  data arrival time                                                  0.62
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.26       0.26
+  clock uncertainty                                       0.35       0.61
+  fractional/FIR/prod_stage_reg_70__16_/CK (DFF_X1)       0.00       0.61 r
+  library hold time                                       0.01       0.62
+  data required time                                                 0.62
+  --------------------------------------------------------------------------
+  data required time                                                 0.62
+  data arrival time                                                 -0.62
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: fractional/FIR/prod_stage_reg_28__14_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_28__14_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.30       0.30
+  fractional/FIR/prod_stage_reg_28__14_/CK (DFF_X1)       0.00       0.30 r
+  fractional/FIR/prod_stage_reg_28__14_/Q (DFF_X1)        0.09       0.40 r
+  fractional/FIR/U14035/ZN (AND2_X1)                      0.03 &     0.43 r
+  fractional/FIR/U179711/Z (BUF_X2)                       0.02 &     0.45 r
+  fractional/FIR/U81587/Z (BUF_X1)                        0.02 &     0.47 r
+  fractional/FIR/U81588/Z (BUF_X1)                        0.02 &     0.48 r
+  fractional/FIR/U81589/Z (BUF_X1)                        0.02 &     0.50 r
+  fractional/FIR/U114277/Z (BUF_X1)                       0.02 &     0.52 r
+  fractional/FIR/U114278/Z (BUF_X1)                       0.02 &     0.54 r
+  fractional/FIR/U114279/Z (BUF_X1)                       0.02 &     0.56 r
+  fractional/FIR/U146984/Z (BUF_X1)                       0.02 &     0.58 r
+  fractional/FIR/U146985/Z (BUF_X1)                       0.02 &     0.59 r
+  fractional/FIR/U146986/Z (BUF_X1)                       0.02 &     0.61 r
+  fractional/FIR/U179710/Z (BUF_X1)                       0.02 &     0.63 r
+  fractional/FIR/U179712/Z (BUF_X1)                       0.02 &     0.65 r
+  fractional/FIR/U49423/Z (BUF_X1)                        0.02 &     0.67 r
+  fractional/FIR/prod_stage_reg_28__14_/D (DFF_X1)        0.00 &     0.67 r
+  data arrival time                                                  0.67
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.31       0.31
+  clock uncertainty                                       0.35       0.66
+  fractional/FIR/prod_stage_reg_28__14_/CK (DFF_X1)       0.00       0.66 r
+  library hold time                                       0.01       0.67
+  data required time                                                 0.67
+  --------------------------------------------------------------------------
+  data required time                                                 0.67
+  data arrival time                                                 -0.67
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: fractional/FIR/prod_stage_reg_101__22_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_101__22_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.27       0.27
+  fractional/FIR/prod_stage_reg_101__22_/CK (DFF_X1)      0.00       0.27 r
+  fractional/FIR/prod_stage_reg_101__22_/Q (DFF_X1)       0.10       0.37 r
+  fractional/FIR/U11707/ZN (AND2_X4)                      0.03 &     0.39 r
+  fractional/FIR/U169338/Z (BUF_X1)                       0.02 &     0.41 r
+  fractional/FIR/U169336/Z (BUF_X1)                       0.02 &     0.43 r
+  fractional/FIR/U136609/Z (BUF_X1)                       0.02 &     0.45 r
+  fractional/FIR/U136608/Z (BUF_X1)                       0.02 &     0.47 r
+  fractional/FIR/U136607/Z (BUF_X1)                       0.02 &     0.49 r
+  fractional/FIR/U103902/Z (BUF_X1)                       0.02 &     0.51 r
+  fractional/FIR/U103901/Z (BUF_X1)                       0.02 &     0.52 r
+  fractional/FIR/U103900/Z (BUF_X1)                       0.02 &     0.54 r
+  fractional/FIR/U71212/Z (BUF_X1)                        0.02 &     0.56 r
+  fractional/FIR/U71211/Z (BUF_X1)                        0.02 &     0.58 r
+  fractional/FIR/U71210/Z (BUF_X1)                        0.02 &     0.60 r
+  fractional/FIR/U169337/Z (BUF_X2)                       0.02 &     0.62 r
+  fractional/FIR/U43155/Z (BUF_X1)                        0.02 &     0.64 r
+  fractional/FIR/prod_stage_reg_101__22_/D (DFF_X1)       0.00 &     0.64 r
+  data arrival time                                                  0.64
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.27       0.27
+  clock uncertainty                                       0.35       0.62
+  fractional/FIR/prod_stage_reg_101__22_/CK (DFF_X1)      0.00       0.62 r
+  library hold time                                       0.02       0.64
+  data required time                                                 0.64
+  --------------------------------------------------------------------------
+  data required time                                                 0.64
+  data arrival time                                                 -0.64
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: fractional/FIR/prod_stage_reg_105__17_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_105__17_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.32       0.32
+  fractional/FIR/prod_stage_reg_105__17_/CK (DFF_X1)      0.00       0.32 r
+  fractional/FIR/prod_stage_reg_105__17_/Q (DFF_X1)       0.09       0.41 r
+  fractional/FIR/U103365/Z (BUF_X1)                       0.02 &     0.43 r
+  fractional/FIR/U11574/ZN (AND2_X1)                      0.03 &     0.46 r
+  fractional/FIR/U168801/Z (BUF_X2)                       0.02 &     0.48 r
+  fractional/FIR/U70673/Z (BUF_X1)                        0.02 &     0.50 r
+  fractional/FIR/U70674/Z (BUF_X1)                        0.02 &     0.52 r
+  fractional/FIR/U70675/Z (BUF_X1)                        0.02 &     0.53 r
+  fractional/FIR/U103363/Z (BUF_X1)                       0.02 &     0.55 r
+  fractional/FIR/U103364/Z (BUF_X1)                       0.02 &     0.57 r
+  fractional/FIR/U136070/Z (BUF_X1)                       0.02 &     0.59 r
+  fractional/FIR/U136071/Z (BUF_X1)                       0.02 &     0.61 r
+  fractional/FIR/U136072/Z (BUF_X1)                       0.02 &     0.63 r
+  fractional/FIR/U168800/Z (BUF_X1)                       0.02 &     0.65 r
+  fractional/FIR/U168802/Z (BUF_X1)                       0.02 &     0.67 r
+  fractional/FIR/U42809/Z (BUF_X1)                        0.02 &     0.68 r
+  fractional/FIR/prod_stage_reg_105__17_/D (DFF_X1)       0.00 &     0.68 r
+  data arrival time                                                  0.68
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.32       0.32
+  clock uncertainty                                       0.35       0.67
+  fractional/FIR/prod_stage_reg_105__17_/CK (DFF_X1)      0.00       0.67 r
+  library hold time                                       0.01       0.68
+  data required time                                                 0.68
+  --------------------------------------------------------------------------
+  data required time                                                 0.68
+  data arrival time                                                 -0.68
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: fractional/FIR/prod_stage_reg_36__14_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_36__14_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.31       0.31
+  fractional/FIR/prod_stage_reg_36__14_/CK (DFF_X1)       0.00       0.31 r
+  fractional/FIR/prod_stage_reg_36__14_/Q (DFF_X1)        0.09       0.40 r
+  fractional/FIR/U13779/ZN (AND2_X1)                      0.03 &     0.43 r
+  fractional/FIR/U178608/Z (BUF_X1)                       0.02 &     0.45 r
+  fractional/FIR/U178606/Z (BUF_X1)                       0.02 &     0.47 r
+  fractional/FIR/U145882/Z (BUF_X1)                       0.02 &     0.49 r
+  fractional/FIR/U145881/Z (BUF_X1)                       0.02 &     0.50 r
+  fractional/FIR/U145880/Z (BUF_X1)                       0.02 &     0.52 r
+  fractional/FIR/U113175/Z (BUF_X1)                       0.02 &     0.54 r
+  fractional/FIR/U113174/Z (BUF_X1)                       0.02 &     0.56 r
+  fractional/FIR/U113173/Z (BUF_X1)                       0.02 &     0.58 r
+  fractional/FIR/U178607/Z (BUF_X2)                       0.02 &     0.60 r
+  fractional/FIR/U80483/Z (BUF_X1)                        0.02 &     0.62 r
+  fractional/FIR/U80484/Z (BUF_X1)                        0.02 &     0.64 r
+  fractional/FIR/U80485/Z (BUF_X1)                        0.02 &     0.65 r
+  fractional/FIR/U48774/Z (BUF_X1)                        0.02 &     0.67 r
+  fractional/FIR/prod_stage_reg_36__14_/D (DFF_X1)        0.00 &     0.67 r
+  data arrival time                                                  0.67
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.31       0.31
+  clock uncertainty                                       0.35       0.66
+  fractional/FIR/prod_stage_reg_36__14_/CK (DFF_X1)       0.00       0.66 r
+  library hold time                                       0.01       0.67
+  data required time                                                 0.67
+  --------------------------------------------------------------------------
+  data required time                                                 0.67
+  data arrival time                                                 -0.67
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: fractional/FIR/prod_stage_reg_166__21_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_166__21_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.30       0.30
+  fractional/FIR/prod_stage_reg_166__21_/CK (DFF_X1)      0.00       0.30 r
+  fractional/FIR/prod_stage_reg_166__21_/Q (DFF_X1)       0.09       0.40 r
+  fractional/FIR/U9626/ZN (AND2_X1)                       0.03 &     0.43 r
+  fractional/FIR/U160097/Z (BUF_X2)                       0.02 &     0.45 r
+  fractional/FIR/U61964/Z (BUF_X1)                        0.02 &     0.47 r
+  fractional/FIR/U61965/Z (BUF_X1)                        0.02 &     0.49 r
+  fractional/FIR/U61966/Z (BUF_X1)                        0.02 &     0.51 r
+  fractional/FIR/U94654/Z (BUF_X1)                        0.02 &     0.52 r
+  fractional/FIR/U94655/Z (BUF_X1)                        0.02 &     0.54 r
+  fractional/FIR/U94656/Z (BUF_X1)                        0.02 &     0.56 r
+  fractional/FIR/U127361/Z (BUF_X1)                       0.02 &     0.58 r
+  fractional/FIR/U127362/Z (BUF_X1)                       0.02 &     0.60 r
+  fractional/FIR/U127363/Z (BUF_X1)                       0.02 &     0.62 r
+  fractional/FIR/U160096/Z (BUF_X1)                       0.02 &     0.64 r
+  fractional/FIR/U160098/Z (BUF_X1)                       0.02 &     0.65 r
+  fractional/FIR/U37584/Z (BUF_X1)                        0.02 &     0.68 r
+  fractional/FIR/prod_stage_reg_166__21_/D (DFF_X1)       0.00 &     0.68 r
+  data arrival time                                                  0.68
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.31       0.31
+  clock uncertainty                                       0.35       0.66
+  fractional/FIR/prod_stage_reg_166__21_/CK (DFF_X1)      0.00       0.66 r
+  library hold time                                       0.02       0.67
+  data required time                                                 0.67
+  --------------------------------------------------------------------------
+  data required time                                                 0.67
+  data arrival time                                                 -0.68
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: fractional/FIR/prod_stage_reg_70__21_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_70__21_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.26       0.26
+  fractional/FIR/prod_stage_reg_70__21_/CK (DFF_X1)       0.00       0.26 r
+  fractional/FIR/prod_stage_reg_70__21_/Q (DFF_X1)        0.10       0.36 r
+  fractional/FIR/U12698/ZN (AND2_X1)                      0.03 &     0.39 r
+  fractional/FIR/U173896/Z (BUF_X1)                       0.02 &     0.41 r
+  fractional/FIR/U173894/Z (BUF_X1)                       0.02 &     0.43 r
+  fractional/FIR/U141169/Z (BUF_X1)                       0.02 &     0.44 r
+  fractional/FIR/U141168/Z (BUF_X1)                       0.02 &     0.46 r
+  fractional/FIR/U141167/Z (BUF_X1)                       0.02 &     0.48 r
+  fractional/FIR/U108462/Z (BUF_X1)                       0.02 &     0.50 r
+  fractional/FIR/U108461/Z (BUF_X1)                       0.02 &     0.52 r
+  fractional/FIR/U108460/Z (BUF_X1)                       0.02 &     0.54 r
+  fractional/FIR/U75772/Z (BUF_X1)                        0.02 &     0.56 r
+  fractional/FIR/U173895/Z (BUF_X2)                       0.02 &     0.57 r
+  fractional/FIR/U75770/Z (BUF_X1)                        0.02 &     0.59 r
+  fractional/FIR/U75771/Z (BUF_X1)                        0.02 &     0.61 r
+  fractional/FIR/U45981/Z (BUF_X1)                        0.02 &     0.63 r
+  fractional/FIR/prod_stage_reg_70__21_/D (DFF_X1)        0.00 &     0.63 r
+  data arrival time                                                  0.63
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.26       0.26
+  clock uncertainty                                       0.35       0.61
+  fractional/FIR/prod_stage_reg_70__21_/CK (DFF_X1)       0.00       0.61 r
+  library hold time                                       0.02       0.63
+  data required time                                                 0.63
+  --------------------------------------------------------------------------
+  data required time                                                 0.63
+  data arrival time                                                 -0.63
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: fractional/FIR/prod_stage_reg_36__22_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_36__22_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.30       0.30
+  fractional/FIR/prod_stage_reg_36__22_/CK (DFF_X1)       0.00       0.30 r
+  fractional/FIR/prod_stage_reg_36__22_/Q (DFF_X1)        0.09       0.40 r
+  fractional/FIR/U13787/ZN (AND2_X1)                      0.03 &     0.43 r
+  fractional/FIR/U178584/Z (BUF_X1)                       0.02 &     0.45 r
+  fractional/FIR/U178582/Z (BUF_X1)                       0.02 &     0.47 r
+  fractional/FIR/U145858/Z (BUF_X1)                       0.02 &     0.49 r
+  fractional/FIR/U145857/Z (BUF_X1)                       0.02 &     0.50 r
+  fractional/FIR/U145856/Z (BUF_X1)                       0.02 &     0.52 r
+  fractional/FIR/U113151/Z (BUF_X1)                       0.02 &     0.54 r
+  fractional/FIR/U113150/Z (BUF_X1)                       0.02 &     0.56 r
+  fractional/FIR/U113149/Z (BUF_X1)                       0.02 &     0.58 r
+  fractional/FIR/U80461/Z (BUF_X1)                        0.02 &     0.60 r
+  fractional/FIR/U80460/Z (BUF_X1)                        0.02 &     0.61 r
+  fractional/FIR/U80459/Z (BUF_X1)                        0.02 &     0.63 r
+  fractional/FIR/U178583/Z (BUF_X2)                       0.02 &     0.65 r
+  fractional/FIR/U48766/Z (BUF_X1)                        0.02 &     0.67 r
+  fractional/FIR/prod_stage_reg_36__22_/D (DFF_X1)        0.00 &     0.67 r
+  data arrival time                                                  0.67
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.31       0.31
+  clock uncertainty                                       0.35       0.66
+  fractional/FIR/prod_stage_reg_36__22_/CK (DFF_X1)       0.00       0.66 r
+  library hold time                                       0.02       0.67
+  data required time                                                 0.67
+  --------------------------------------------------------------------------
+  data required time                                                 0.67
+  data arrival time                                                 -0.67
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: fractional/FIR/prod_stage_reg_48__18_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: fractional/FIR/prod_stage_reg_48__18_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.28       0.28
+  fractional/FIR/prod_stage_reg_48__18_/CK (DFF_X1)       0.00       0.28 r
+  fractional/FIR/prod_stage_reg_48__18_/Q (DFF_X1)        0.09       0.37 r
+  fractional/FIR/U111507/Z (BUF_X1)                       0.02 &     0.40 r
+  fractional/FIR/U13399/ZN (AND2_X1)                      0.03 &     0.42 r
+  fractional/FIR/U176940/Z (BUF_X1)                       0.02 &     0.44 r
+  fractional/FIR/U176938/Z (BUF_X1)                       0.02 &     0.46 r
+  fractional/FIR/U144214/Z (BUF_X1)                       0.02 &     0.48 r
+  fractional/FIR/U144213/Z (BUF_X1)                       0.02 &     0.50 r
+  fractional/FIR/U144212/Z (BUF_X1)                       0.02 &     0.52 r
+  fractional/FIR/U111506/Z (BUF_X1)                       0.02 &     0.54 r
+  fractional/FIR/U111505/Z (BUF_X1)                       0.02 &     0.55 r
+  fractional/FIR/U78817/Z (BUF_X1)                        0.02 &     0.57 r
+  fractional/FIR/U78816/Z (BUF_X1)                        0.02 &     0.59 r
+  fractional/FIR/U78815/Z (BUF_X1)                        0.02 &     0.61 r
+  fractional/FIR/U176939/Z (BUF_X2)                       0.02 &     0.63 r
+  fractional/FIR/U47747/Z (BUF_X1)                        0.02 &     0.65 r
+  fractional/FIR/prod_stage_reg_48__18_/D (DFF_X1)        0.00 &     0.65 r
+  data arrival time                                                  0.65
+
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (propagated)                        0.28       0.28
+  clock uncertainty                                       0.35       0.63
+  fractional/FIR/prod_stage_reg_48__18_/CK (DFF_X1)       0.00       0.63 r
+  library hold time                                       0.02       0.65
+  data required time                                                 0.65
+  --------------------------------------------------------------------------
+  data required time                                                 0.65
+  data arrival time                                                 -0.65
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: CIC/d_tmp_reg_40_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d_tmp_reg_40_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_1 (rise edge)                  0.00       0.00
+  clock network delay (propagated)         0.16       0.16
+  CIC/d_tmp_reg_40_/CK (DFF_X1)            0.00       0.16 r
+  CIC/d_tmp_reg_40_/QN (DFF_X1)            0.07       0.22 r
+  CIC/U8432/Z (BUF_X1)                     0.02 &     0.24 r
+  CIC/U8428/Z (BUF_X1)                     0.02 &     0.26 r
+  CIC/U8427/Z (BUF_X1)                     0.02 &     0.28 r
+  CIC/U8426/Z (BUF_X1)                     0.02 &     0.30 r
+  CIC/U8425/Z (BUF_X1)                     0.02 &     0.32 r
+  CIC/U8420/Z (BUF_X1)                     0.02 &     0.34 r
+  CIC/U8419/Z (BUF_X1)                     0.02 &     0.35 r
+  CIC/U8418/Z (BUF_X1)                     0.02 &     0.37 r
+  CIC/U8417/Z (BUF_X1)                     0.02 &     0.39 r
+  CIC/U8414/Z (BUF_X1)                     0.02 &     0.41 r
+  CIC/U8413/Z (BUF_X1)                     0.02 &     0.43 r
+  CIC/U8412/Z (BUF_X1)                     0.02 &     0.45 r
+  CIC/U8431/Z (BUF_X1)                     0.03 &     0.48 r
+  CIC/U907/ZN (OAI22_X1)                   0.02 &     0.50 f
+  CIC/U12132/Z (BUF_X1)                    0.02 &     0.52 f
+  CIC/d_tmp_reg_40_/D (DFF_X1)             0.00 &     0.52 f
+  data arrival time                                   0.52
+
+  clock clk_1 (rise edge)                  0.00       0.00
+  clock network delay (propagated)         0.16       0.16
+  clock uncertainty                        0.35       0.51
+  CIC/d_tmp_reg_40_/CK (DFF_X1)            0.00       0.51 r
+  library hold time                        0.01       0.52
+  data required time                                  0.52
+  -----------------------------------------------------------
+  data required time                                  0.52
+  data arrival time                                  -0.52
+  -----------------------------------------------------------
+  slack (MET)                                         0.00
+
+
+  Startpoint: CIC/d4_reg_24_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d4_reg_24_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.16       0.16
+  CIC/d4_reg_24_/CK (DFFR_X1)                             0.00       0.16 r
+  CIC/d4_reg_24_/Q (DFFR_X1)                              0.10       0.26 r
+  CIC/add_65/B[24] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.26 r
+  CIC/add_65/U1_24/S (FA_X1)                              0.04 &     0.30 r
+  CIC/add_65/SUM[24] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.30 r
+  CIC/U581/ZN (NAND2_X1)                                  0.02 &     0.33 f
+  CIC/U580/ZN (OAI21_X4)                                  0.02 &     0.34 r
+  CIC/U10782/Z (BUF_X1)                                   0.02 &     0.36 r
+  CIC/U10783/Z (BUF_X1)                                   0.02 &     0.38 r
+  CIC/U10784/Z (BUF_X1)                                   0.02 &     0.40 r
+  CIC/U10780/Z (BUF_X1)                                   0.02 &     0.42 r
+  CIC/U10781/Z (BUF_X1)                                   0.02 &     0.44 r
+  CIC/U10779/Z (BUF_X1)                                   0.02 &     0.45 r
+  CIC/U10778/Z (BUF_X1)                                   0.02 &     0.47 r
+  CIC/U10777/Z (BUF_X1)                                   0.02 &     0.49 r
+  CIC/U10776/Z (BUF_X1)                                   0.02 &     0.51 r
+  CIC/U10775/Z (BUF_X1)                                   0.02 &     0.53 r
+  CIC/d4_reg_24_/D (DFFR_X1)                              0.00 &     0.53 r
+  data arrival time                                                  0.53
+
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.16       0.16
+  clock uncertainty                                       0.35       0.51
+  CIC/d4_reg_24_/CK (DFFR_X1)                             0.00       0.51 r
+  library hold time                                       0.01       0.53
+  data required time                                                 0.53
+  --------------------------------------------------------------------------
+  data required time                                                 0.53
+  data arrival time                                                 -0.53
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: CIC/d_d5_reg_14_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d6_reg_14_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.15       0.15
+  CIC/d_d5_reg_14_/CK (DFFR_X1)                           0.00       0.15 r
+  CIC/d_d5_reg_14_/Q (DFFR_X1)                            0.09       0.25 f
+  CIC/sub_97/B[14] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_sub_2)
+                                                          0.00       0.25 f
+  CIC/sub_97/U16/ZN (INV_X1)                              0.01 &     0.26 r
+  CIC/sub_97/U2_14/S (FA_X1)                              0.04 &     0.30 r
+  CIC/sub_97/DIFF[14] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_sub_2)
+                                                          0.00       0.30 r
+  CIC/U1011/ZN (NAND2_X1)                                 0.02 &     0.32 f
+  CIC/U1010/ZN (OAI21_X4)                                 0.02 &     0.34 r
+  CIC/U6416/Z (BUF_X1)                                    0.02 &     0.36 r
+  CIC/U6417/Z (BUF_X1)                                    0.02 &     0.38 r
+  CIC/U6418/Z (BUF_X1)                                    0.02 &     0.40 r
+  CIC/U6414/Z (BUF_X1)                                    0.02 &     0.42 r
+  CIC/U6415/Z (BUF_X1)                                    0.02 &     0.43 r
+  CIC/U6413/Z (BUF_X1)                                    0.02 &     0.45 r
+  CIC/U6412/Z (BUF_X1)                                    0.02 &     0.47 r
+  CIC/U6411/Z (BUF_X1)                                    0.02 &     0.49 r
+  CIC/U6410/Z (BUF_X1)                                    0.02 &     0.51 r
+  CIC/U6409/Z (BUF_X1)                                    0.02 &     0.53 r
+  CIC/d6_reg_14_/D (DFFR_X1)                              0.00 &     0.53 r
+  data arrival time                                                  0.53
+
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.16       0.16
+  clock uncertainty                                       0.35       0.51
+  CIC/d6_reg_14_/CK (DFFR_X1)                             0.00       0.51 r
+  library hold time                                       0.02       0.53
+  data required time                                                 0.53
+  --------------------------------------------------------------------------
+  data required time                                                 0.53
+  data arrival time                                                 -0.53
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: CIC/d4_reg_23_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d4_reg_23_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.16       0.16
+  CIC/d4_reg_23_/CK (DFFR_X1)                             0.00       0.16 r
+  CIC/d4_reg_23_/Q (DFFR_X1)                              0.10       0.27 r
+  CIC/add_65/B[23] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.27 r
+  CIC/add_65/U1_23/S (FA_X1)                              0.04 &     0.30 r
+  CIC/add_65/SUM[23] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.30 r
+  CIC/U583/ZN (NAND2_X1)                                  0.02 &     0.33 f
+  CIC/U582/ZN (OAI21_X4)                                  0.02 &     0.34 r
+  CIC/U10768/Z (BUF_X1)                                   0.02 &     0.36 r
+  CIC/U10770/Z (BUF_X1)                                   0.02 &     0.38 r
+  CIC/U10769/Z (BUF_X1)                                   0.02 &     0.40 r
+  CIC/U10766/Z (BUF_X1)                                   0.02 &     0.42 r
+  CIC/U10767/Z (BUF_X1)                                   0.02 &     0.44 r
+  CIC/U10765/Z (BUF_X1)                                   0.02 &     0.45 r
+  CIC/U10764/Z (BUF_X1)                                   0.02 &     0.47 r
+  CIC/U10763/Z (BUF_X1)                                   0.02 &     0.49 r
+  CIC/U10762/Z (BUF_X1)                                   0.02 &     0.51 r
+  CIC/U10761/Z (BUF_X1)                                   0.02 &     0.53 r
+  CIC/d4_reg_23_/D (DFFR_X1)                              0.00 &     0.53 r
+  data arrival time                                                  0.53
+
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.16       0.16
+  clock uncertainty                                       0.35       0.51
+  CIC/d4_reg_23_/CK (DFFR_X1)                             0.00       0.51 r
+  library hold time                                       0.01       0.53
+  data required time                                                 0.53
+  --------------------------------------------------------------------------
+  data required time                                                 0.53
+  data arrival time                                                 -0.53
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: CIC/d_tmp_reg_17_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d5_reg_17_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.16       0.16
+  CIC/d_tmp_reg_17_/CK (DFF_X1)                           0.00       0.16 r
+  CIC/d_tmp_reg_17_/Q (DFF_X1)                            0.09       0.25 r
+  CIC/sub_94/A[17] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_sub_3)
+                                                          0.00       0.25 r
+  CIC/sub_94/U2_17/S (FA_X1)                              0.05 &     0.30 r
+  CIC/sub_94/DIFF[17] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_sub_3)
+                                                          0.00       0.30 r
+  CIC/U669/ZN (NAND2_X1)                                  0.02 &     0.32 f
+  CIC/U668/ZN (OAI21_X2)                                  0.02 &     0.33 r
+  CIC/U7725/Z (BUF_X1)                                    0.02 &     0.35 r
+  CIC/U7726/Z (BUF_X1)                                    0.02 &     0.37 r
+  CIC/U7723/Z (BUF_X1)                                    0.02 &     0.39 r
+  CIC/U7724/Z (BUF_X1)                                    0.02 &     0.41 r
+  CIC/U7721/Z (BUF_X1)                                    0.02 &     0.43 r
+  CIC/U7722/Z (BUF_X1)                                    0.02 &     0.45 r
+  CIC/U7719/Z (BUF_X1)                                    0.02 &     0.47 r
+  CIC/U7718/Z (BUF_X1)                                    0.02 &     0.48 r
+  CIC/U7717/Z (BUF_X1)                                    0.02 &     0.50 r
+  CIC/U7720/Z (BUF_X1)                                    0.02 &     0.52 r
+  CIC/d5_reg_17_/D (DFFR_X1)                              0.00 &     0.52 r
+  data arrival time                                                  0.52
+
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.15       0.15
+  clock uncertainty                                       0.35       0.50
+  CIC/d5_reg_17_/CK (DFFR_X1)                             0.00       0.50 r
+  library hold time                                       0.02       0.52
+  data required time                                                 0.52
+  --------------------------------------------------------------------------
+  data required time                                                 0.52
+  data arrival time                                                 -0.52
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: CIC/d_tmp_reg_38_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d_tmp_reg_38_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_1 (rise edge)                  0.00       0.00
+  clock network delay (propagated)         0.16       0.16
+  CIC/d_tmp_reg_38_/CK (DFF_X1)            0.00       0.16 r
+  CIC/d_tmp_reg_38_/QN (DFF_X1)            0.07       0.22 r
+  CIC/U8471/Z (BUF_X1)                     0.02 &     0.24 r
+  CIC/U8467/Z (BUF_X1)                     0.02 &     0.26 r
+  CIC/U8466/Z (BUF_X1)                     0.02 &     0.28 r
+  CIC/U8465/Z (BUF_X1)                     0.02 &     0.30 r
+  CIC/U8464/Z (BUF_X1)                     0.02 &     0.32 r
+  CIC/U8459/Z (BUF_X1)                     0.02 &     0.34 r
+  CIC/U8458/Z (BUF_X1)                     0.02 &     0.35 r
+  CIC/U8457/Z (BUF_X1)                     0.02 &     0.37 r
+  CIC/U8456/Z (BUF_X1)                     0.02 &     0.39 r
+  CIC/U8453/Z (BUF_X1)                     0.02 &     0.41 r
+  CIC/U8452/Z (BUF_X1)                     0.02 &     0.43 r
+  CIC/U8451/Z (BUF_X1)                     0.02 &     0.45 r
+  CIC/U8470/Z (BUF_X1)                     0.03 &     0.48 r
+  CIC/U905/ZN (OAI22_X1)                   0.02 &     0.50 f
+  CIC/U12133/Z (BUF_X1)                    0.02 &     0.52 f
+  CIC/d_tmp_reg_38_/D (DFF_X1)             0.00 &     0.52 f
+  data arrival time                                   0.52
+
+  clock clk_1 (rise edge)                  0.00       0.00
+  clock network delay (propagated)         0.16       0.16
+  clock uncertainty                        0.35       0.51
+  CIC/d_tmp_reg_38_/CK (DFF_X1)            0.00       0.51 r
+  library hold time                        0.01       0.52
+  data required time                                  0.52
+  -----------------------------------------------------------
+  data required time                                  0.52
+  data arrival time                                  -0.52
+  -----------------------------------------------------------
+  slack (MET)                                         0.00
+
+
+  Startpoint: CIC/d4_reg_28_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d4_reg_28_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.11       0.11
+  CIC/d4_reg_28_/CK (DFFR_X1)                             0.00       0.11 r
+  CIC/d4_reg_28_/Q (DFFR_X1)                              0.10       0.22 r
+  CIC/add_65/B[28] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.22 r
+  CIC/add_65/U1_28/S (FA_X1)                              0.04 &     0.26 r
+  CIC/add_65/SUM[28] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.26 r
+  CIC/U573/ZN (NAND2_X1)                                  0.02 &     0.28 f
+  CIC/U572/ZN (OAI21_X4)                                  0.02 &     0.30 r
+  CIC/U7949/Z (BUF_X1)                                    0.02 &     0.32 r
+  CIC/U7950/Z (BUF_X1)                                    0.02 &     0.33 r
+  CIC/U7946/Z (BUF_X1)                                    0.02 &     0.35 r
+  CIC/U7944/Z (BUF_X1)                                    0.02 &     0.37 r
+  CIC/U7945/Z (BUF_X1)                                    0.02 &     0.39 r
+  CIC/U7942/Z (BUF_X1)                                    0.02 &     0.41 r
+  CIC/U7943/Z (BUF_X1)                                    0.02 &     0.43 r
+  CIC/U7941/Z (BUF_X1)                                    0.02 &     0.45 r
+  CIC/U7947/Z (BUF_X1)                                    0.02 &     0.46 r
+  CIC/U7948/Z (BUF_X1)                                    0.02 &     0.48 r
+  CIC/d4_reg_28_/D (DFFR_X1)                              0.00 &     0.48 r
+  data arrival time                                                  0.48
+
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.11       0.11
+  clock uncertainty                                       0.35       0.46
+  CIC/d4_reg_28_/CK (DFFR_X1)                             0.00       0.46 r
+  library hold time                                       0.02       0.48
+  data required time                                                 0.48
+  --------------------------------------------------------------------------
+  data required time                                                 0.48
+  data arrival time                                                 -0.48
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: CIC/d_tmp_reg_41_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d_tmp_reg_41_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk_1 (rise edge)                  0.00       0.00
+  clock network delay (propagated)         0.17       0.17
+  CIC/d_tmp_reg_41_/CK (DFF_X1)            0.00       0.17 r
+  CIC/d_tmp_reg_41_/QN (DFF_X1)            0.07       0.24 r
+  CIC/U8405/Z (BUF_X1)                     0.02 &     0.26 r
+  CIC/U8403/Z (BUF_X1)                     0.02 &     0.28 r
+  CIC/U8404/Z (BUF_X1)                     0.02 &     0.30 r
+  CIC/U8402/Z (BUF_X1)                     0.02 &     0.32 r
+  CIC/U8399/Z (BUF_X1)                     0.02 &     0.34 r
+  CIC/U8398/Z (BUF_X1)                     0.02 &     0.35 r
+  CIC/U8395/Z (BUF_X1)                     0.02 &     0.37 r
+  CIC/U8394/Z (BUF_X1)                     0.02 &     0.39 r
+  CIC/U8391/Z (BUF_X1)                     0.02 &     0.41 r
+  CIC/U8390/Z (BUF_X1)                     0.02 &     0.43 r
+  CIC/U8389/Z (BUF_X1)                     0.02 &     0.45 r
+  CIC/U8408/Z (BUF_X1)                     0.03 &     0.48 r
+  CIC/U908/ZN (OAI22_X1)                   0.01 &     0.49 f
+  CIC/U12130/Z (BUF_X1)                    0.02 &     0.52 f
+  CIC/U12131/Z (BUF_X1)                    0.02 &     0.54 f
+  CIC/d_tmp_reg_41_/D (DFF_X1)             0.00 &     0.54 f
+  data arrival time                                   0.54
+
+  clock clk_1 (rise edge)                  0.00       0.00
+  clock network delay (propagated)         0.17       0.17
+  clock uncertainty                        0.35       0.52
+  CIC/d_tmp_reg_41_/CK (DFF_X1)            0.00       0.52 r
+  library hold time                        0.02       0.53
+  data required time                                  0.53
+  -----------------------------------------------------------
+  data required time                                  0.53
+  data arrival time                                  -0.54
+  -----------------------------------------------------------
+  slack (MET)                                         0.00
+
+
+  Startpoint: CIC/d4_reg_33_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d4_reg_33_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.11       0.11
+  CIC/d4_reg_33_/CK (DFFR_X1)                             0.00       0.11 r
+  CIC/d4_reg_33_/Q (DFFR_X1)                              0.10       0.22 r
+  CIC/add_65/B[33] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.22 r
+  CIC/add_65/U1_33/S (FA_X1)                              0.04 &     0.26 r
+  CIC/add_65/SUM[33] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.26 r
+  CIC/U401/ZN (NAND2_X1)                                  0.02 &     0.28 f
+  CIC/U400/ZN (OAI21_X4)                                  0.02 &     0.30 r
+  CIC/U7998/Z (BUF_X1)                                    0.02 &     0.32 r
+  CIC/U7999/Z (BUF_X1)                                    0.02 &     0.33 r
+  CIC/U8000/Z (BUF_X1)                                    0.02 &     0.35 r
+  CIC/U7996/Z (BUF_X1)                                    0.02 &     0.37 r
+  CIC/U7997/Z (BUF_X1)                                    0.02 &     0.39 r
+  CIC/U7995/Z (BUF_X1)                                    0.02 &     0.41 r
+  CIC/U7994/Z (BUF_X1)                                    0.02 &     0.43 r
+  CIC/U7993/Z (BUF_X1)                                    0.02 &     0.45 r
+  CIC/U7992/Z (BUF_X1)                                    0.02 &     0.47 r
+  CIC/U7991/Z (BUF_X1)                                    0.02 &     0.48 r
+  CIC/d4_reg_33_/D (DFFR_X1)                              0.00 &     0.48 r
+  data arrival time                                                  0.48
+
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.11       0.11
+  clock uncertainty                                       0.35       0.46
+  CIC/d4_reg_33_/CK (DFFR_X1)                             0.00       0.46 r
+  library hold time                                       0.02       0.48
+  data required time                                                 0.48
+  --------------------------------------------------------------------------
+  data required time                                                 0.48
+  data arrival time                                                 -0.48
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: CIC/d4_reg_30_
+              (rising edge-triggered flip-flop clocked by clk_1)
+  Endpoint: CIC/d4_reg_30_
+            (rising edge-triggered flip-flop clocked by clk_1)
+  Path Group: clk_1
+  Path Type: min
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.12       0.12
+  CIC/d4_reg_30_/CK (DFFR_X1)                             0.00       0.12 r
+  CIC/d4_reg_30_/Q (DFFR_X1)                              0.10       0.22 r
+  CIC/add_65/B[30] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.22 r
+  CIC/add_65/U1_30/S (FA_X1)                              0.04 &     0.26 r
+  CIC/add_65/SUM[30] (CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52_DW01_add_0)
+                                                          0.00       0.26 r
+  CIC/U407/ZN (NAND2_X1)                                  0.02 &     0.28 f
+  CIC/U406/ZN (OAI21_X4)                                  0.02 &     0.30 r
+  CIC/U7968/Z (BUF_X1)                                    0.02 &     0.32 r
+  CIC/U7970/Z (BUF_X1)                                    0.02 &     0.34 r
+  CIC/U7969/Z (BUF_X1)                                    0.02 &     0.35 r
+  CIC/U7966/Z (BUF_X1)                                    0.02 &     0.37 r
+  CIC/U7967/Z (BUF_X1)                                    0.02 &     0.39 r
+  CIC/U7965/Z (BUF_X1)                                    0.02 &     0.41 r
+  CIC/U7964/Z (BUF_X1)                                    0.02 &     0.43 r
+  CIC/U7963/Z (BUF_X1)                                    0.02 &     0.45 r
+  CIC/U7962/Z (BUF_X1)                                    0.02 &     0.47 r
+  CIC/U7961/Z (BUF_X1)                                    0.02 &     0.49 r
+  CIC/d4_reg_30_/D (DFFR_X1)                              0.00 &     0.49 r
+  data arrival time                                                  0.49
+
+  clock clk_1 (rise edge)                                 0.00       0.00
+  clock network delay (propagated)                        0.12       0.12
+  clock uncertainty                                       0.35       0.47
+  CIC/d4_reg_30_/CK (DFFR_X1)                             0.00       0.47 r
+  library hold time                                       0.02       0.48
+  data required time                                                 0.48
+  --------------------------------------------------------------------------
+  data required time                                                 0.48
+  data arrival time                                                 -0.49
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+1

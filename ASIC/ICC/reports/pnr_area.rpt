@@ -1,0 +1,36 @@
+ 
+****************************************
+Report : area
+Design : FIR_IIR
+Version: G-2012.06-ICC-SP2
+Date   : Thu Feb  7 06:42:18 2019
+****************************************
+
+Library(s) Used:
+
+    NangateOpenCellLibrary_ss0p95vn40c (File: /home/standard_cell_libraries/NangateOpenCellLibrary_PDKv1_3_v2010_12/lib/Front_End/Liberty/NLDM/NangateOpenCellLibrary_ss0p95vn40c.db)
+
+Number of ports:                           75
+Number of nets:                           300
+Number of cells:                           89
+Number of combinational cells:             85
+Number of sequential cells:                 0
+Number of macros:                           0
+Number of buf/inv:                         45
+Number of references:                      13
+
+Combinational area:       241268.912515
+Buf/Inv area:             161370.758066
+Noncombinational area:    62120.574055
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:          303389.486570
+Total area:                 undefined
+
+Area of detected synthetic parts
+--------------------------------
+  No DW parts to report!
+
+Total synthetic cell area:              0.0000  0.0%  
+
+1

@@ -1,0 +1,81 @@
+ 
+****************************************
+Report : qor
+Design : FIR_IIR
+Version: G-2012.06-SP2
+Date   : Fri Dec  6 04:12:47 2019
+****************************************
+
+
+  Timing Path Group 'clk'
+  -----------------------------------
+  Levels of Logic:              64.00
+  Critical Path Length:          4.90
+  Critical Path Slack:           0.72
+  Critical Path Clk Period:      6.00
+  Total Negative Slack:          0.00
+  No. of Violating Paths:        0.00
+  Worst Hold Violation:         -0.27
+  Total Hold Violation:      -3070.40
+  No. of Hold Violations:    12668.00
+  -----------------------------------
+
+  Timing Path Group 'clk_1'
+  -----------------------------------
+  Levels of Logic:             104.00
+  Critical Path Length:          7.68
+  Critical Path Slack:           9.93
+  Critical Path Clk Period:     18.00
+  Total Negative Slack:          0.00
+  No. of Violating Paths:        0.00
+  Worst Hold Violation:         -0.27
+  Total Hold Violation:       -233.66
+  No. of Hold Violations:      909.00
+  -----------------------------------
+
+
+  Cell Count
+  -----------------------------------
+  Hierarchical Cell Count:        283
+  Hierarchical Port Count:      39109
+  Leaf Cell Count:              47566
+  Buf/Inv Cell Count:            4619
+  CT Buf/Inv Cell Count:            0
+  Combinational Cell Count:     33978
+  Sequential Cell Count:        13588
+  Macro Count:                      0
+  -----------------------------------
+
+
+  Area
+  -----------------------------------
+  Combinational Area:    77761.110548
+  Noncombinational Area: 62120.042055
+  Buf/Inv Area:           3236.687945
+  Net Area:                  0.000000
+  -----------------------------------
+  Cell Area:            139881.152603
+  Design Area:          139881.152603
+
+
+  Design Rules
+  -----------------------------------
+  Total Number of Nets:         66436
+  Nets With Violations:             0
+  Max Trans Violations:             0
+  Max Cap Violations:               0
+  -----------------------------------
+
+
+  Hostname: 192.168.23.128
+
+  Compile CPU Statistics
+  -----------------------------------------
+  Resource Sharing:                   88.38
+  Logic Optimization:                 83.70
+  Mapping Optimization:               66.43
+  -----------------------------------------
+  Overall Compile Time:              267.51
+  Overall Compile Wall Clock Time:   274.99
+
+1

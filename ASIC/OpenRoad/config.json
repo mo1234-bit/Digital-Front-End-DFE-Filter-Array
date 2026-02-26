@@ -1,0 +1,32 @@
+{
+    "DESIGN_NAME": "TOP",
+    "VERILOG_FILES": [
+        "dir::src/TOP.sv",
+        "dir::src/FIR.sv",
+        "dir::src/Decimator.sv",
+        "dir::src/Interpolation.sv",
+        "dir::src/Fractional_decimetor.sv",
+        "dir::src/FIFO.sv",
+        "dir::src/IIR.sv",
+        "dir::src/IIR_top.sv",
+        "dir::src/CIC.sv"
+    ],
+    
+    "CLOCK_PORT": "clk",
+    "CLOCK_NET": "clk",
+    "CLOCK_PERIOD": "14.0",
+    "BASE_SDC_FILE": "dir::src/TOP.sdc",
+    "FP_PIN_ORDER_CFG": "dir::pin_order.cfg",
+  
+    "SYNTH_STRATEGY":"AREA 3",
+    "FP_CORE_UTIL":20,
+
+  
+    "MAGIC_EXT_USE_GDS": 1,
+    "MAGIC_WRITE_FULL_LEF": 1,
+    "SYNTH_CHECKS_ALLOW_TRISTATES": 0,
+    
+    "QUIT_ON_LONG_WIRES": 1
+    
+   
+}

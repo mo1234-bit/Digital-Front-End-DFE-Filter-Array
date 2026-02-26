@@ -1,0 +1,29 @@
+
+55. Printing statistics.
+
+=== FIR_IIR ===
+
+   Number of wires:             508264
+   Number of wire bits:         595373
+   Number of public wires:         566
+   Number of public wire bits:   26261
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:             534655
+     $_ANDNOT_                  162629
+     $_AND_                       8590
+     $_DFFE_PP_                    566
+     $_MUX_                       1459
+     $_NAND_                      4060
+     $_NOR_                      43659
+     $_NOT_                      21822
+     $_ORNOT_                    13066
+     $_OR_                       64607
+     $_SDFFCE_PN0P_                 26
+     $_SDFFE_PN0N_                   1
+     $_SDFFE_PN0P_               17977
+     $_SDFF_PN0_                    23
+     $_XNOR_                     64997
+     $_XOR_                     131173
+

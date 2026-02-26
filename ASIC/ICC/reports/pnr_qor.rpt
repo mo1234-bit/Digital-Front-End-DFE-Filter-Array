@@ -1,0 +1,84 @@
+ 
+****************************************
+Report : qor
+Design : FIR_IIR
+Version: G-2012.06-ICC-SP2
+Date   : Thu Feb  7 06:43:42 2019
+****************************************
+
+
+  Timing Path Group 'clk'
+  -----------------------------------
+  Levels of Logic:              63.00
+  Critical Path Length:          4.22
+  Critical Path Slack:           1.38
+  Critical Path Clk Period:      6.00
+  Total Negative Slack:          0.00
+  No. of Violating Paths:        0.00
+  Worst Hold Violation:          0.00
+  Total Hold Violation:          0.00
+  No. of Hold Violations:        0.00
+  -----------------------------------
+
+  Timing Path Group 'clk_1'
+  -----------------------------------
+  Levels of Logic:             120.00
+  Critical Path Length:          6.39
+  Critical Path Slack:          11.23
+  Critical Path Clk Period:     18.00
+  Total Negative Slack:          0.00
+  No. of Violating Paths:        0.00
+  Worst Hold Violation:          0.00
+  Total Hold Violation:          0.00
+  No. of Hold Violations:        0.00
+  -----------------------------------
+
+
+  Cell Count
+  -----------------------------------
+  Hierarchical Cell Count:        283
+  Hierarchical Port Count:      40195
+  Leaf Cell Count:             240660
+  Buf/Inv Cell Count:          197673
+  CT Buf/Inv Cell Count:         2162
+  Combinational Cell Count:    227072
+  Sequential Cell Count:        13588
+  Macro Count:                      0
+  -----------------------------------
+
+
+  Area
+  -----------------------------------
+  Combinational Area:   241268.912515
+  Noncombinational Area: 62120.574055
+  Buf/Inv Area:         161370.758066
+  Net Area:                  0.000000
+  Net XLength        :      821309.00
+  Net YLength        :      879150.56
+  -----------------------------------
+  Cell Area:            303389.486570
+  Design Area:          303389.486570
+  Net Length        :      1700459.50
+
+
+  Design Rules
+  -----------------------------------
+  Total Number of Nets:        259771
+  Nets With Violations:             0
+  Max Trans Violations:             0
+  Max Cap Violations:               0
+  -----------------------------------
+
+
+  Hostname: 192.168.23.128
+
+  Compile CPU Statistics
+  -----------------------------------------
+  Resource Sharing:                    0.00
+  Logic Optimization:                  0.00
+  Mapping Optimization:             1271.73
+  -----------------------------------------
+  Overall Compile Time:             1300.87
+  Overall Compile Wall Clock Time:  1363.27
+
+1

@@ -1,0 +1,32 @@
+ 
+****************************************
+Report : cell
+Design : FIR_IIR
+Version: G-2012.06-SP2
+Date   : Fri Dec  6 04:12:46 2019
+****************************************
+
+Attributes:
+    b - black box (unknown)
+    h - hierarchical
+    n - noncombinational
+    p - parameterized
+    r - removable
+    u - contains unmapped logic
+
+Cell                      Reference       Library             Area  Attributes
+--------------------------------------------------------------------------------
+CIC                       CIC_INPUTWIDTH32_N4_MAX_D17_REGWIDTH52
+                                                          7324.044123
+                                                                    h, n, p
+IIR                       IIR_top_R11020054732_CO_THETA1536870912_R21020054732_CO_THETA2n868675383
+                                                          8953.294099
+                                                                    h, n, p
+fifo                      fifo_DATA_WIDTH32_ADDR_WIDTH4   4789.063927
+                                                                    h, n, p
+fractional                Fractional_decimetor_DATA_WIDTH32_L2_COEFF_WIDTH32_TAPS250_COEFF_FRAC15_M3
+                                                          118814.750454
+                                                                    h, n, p
+--------------------------------------------------------------------------------
+Total 4 cells                                             139881.152603
+1
