@@ -1,574 +1,361 @@
-# Digital Front-End (DFE) — ASIC Implementation
+# Digital Front-End (DFE) — RTL to ASIC Implementation
 
-> **Fractional rate converter → Dual IIR notch filters → CIC decimator**  
-> Verified in Python · Implemented in SystemVerilog · Taped out on NanGate 45nm (ICC) and Sky130 130nm (OpenROAD)
+> Fractional rate converter → dual IIR notch filters → CIC decimator  
+> Python-verified · SystemVerilog RTL · RTL-to-GDS on NanGate 45nm and Sky130
+
+This project implements a Digital Front-End (DFE) signal-processing chain for a software-defined radio receiver. The DFE accepts a 9 MHz sampled input signal, performs fractional rate conversion to 6 MHz, suppresses interference using dual IIR notch filters, and applies a runtime-programmable CIC decimator.
+
+My main work focused on FIR/top-level RTL design and complete ASIC implementation flows using both Synopsys ICC and OpenLane/OpenROAD.
 
 ---
 
+## My Contributions
 
-## 1. Project Overview
+This project was developed as part of a team for the IEEE ISSC Alexandria competition.
 
-This project implements a complete **Digital Front-End (DFE)** signal-processing chain for a software-defined radio receiver. The chain accepts a 9 MHz sampled signal and delivers a decimated, interference-free output at a programmable rate. All DSP blocks are designed in SystemVerilog, numerically verified against a Python floating-point reference, and silicon-proven on two technology nodes.
+My main contributions were:
 
-```
+- Designed and implemented the FIR filter RTL used in the fractional rate-conversion path.
+- Wrote and integrated the top-level RTL connecting the fractional rate converter, IIR notch filters, CIC decimator, asynchronous FIFO, and control interfaces.
+- Integrated my RTL blocks with team-developed DSP blocks, including the dual IIR notch filters and CIC decimator.
+- Verified the FIR/fractional-decimation datapath against a Python floating-point/fixed-point reference model.
+- Performed the full ASIC implementation flow using Synopsys ICC on NanGate 45nm, including synthesis, floorplanning, placement, CTS, routing, STA, DRC, LVS, and sign-off reporting.
+- Performed the full ASIC implementation flow using OpenLane/OpenROAD on Sky130, including synthesis, floorplanning, placement, CTS, routing, STA, DRC, LVS, and GDS generation.
+- Contributed to timing/debug closure, physical verification, and final sign-off documentation.
+
+The project won the ASIC tape-out side prize in the IEEE ISSC Alexandria competition and ranked 4th in the main competition track.
+
+---
+
+## Key Results
+
+| Item | Result |
+|---|---|
+| Signal chain | Fractional decimator + dual IIR notch + CIC decimator |
+| Input sample rate | 9 MHz |
+| Fractional conversion | 9 MHz ×2 ÷3 = 6 MHz |
+| Data format | 32-bit signed fixed-point, s16.15 |
+| FIR filter | 250 taps, Kaiser window, ≥81 dB stopband attenuation |
+| IIR notch filters | 2.4 MHz and 5 MHz interference suppression |
+| CIC decimator | 4th order, runtime-programmable D = 1–16 |
+| CDC | Gray-code asynchronous FIFO |
+| NanGate 45nm | Synopsys ICC RTL-to-GDS, timing clean, DRC/LVS clean |
+| Sky130 | OpenROAD/OpenLane RTL-to-GDS, WNS +4.09 ns, WHS +0.08 ns, DRC/LVS clean |
+| Competition result | ASIC tape-out side prize winner, 4th place in main IEEE ISSC Alexandria competition track |
+
+---
+
+## System Architecture
+
+```text
 Input 9 MHz
     │
     ▼
-┌─────────────────────────────────────────────────────┐  clk domain (166 MHz / NanGate │ 71 MHz / Sky130)
+┌─────────────────────────────────────────────────────┐
 │  UPSAMPLE ×2  →  FIR 250-tap  →  DOWNSAMPLE ÷3     │
-│              (Fractional Decimator 2/3)              │
+│              Fractional Rate Converter              │
 └──────────────────────────┬──────────────────────────┘
-                           │  6 MHz   [Gray-code Async FIFO — CDC]
-┌──────────────────────────▼──────────────────────────┐  clk_1 domain (55 MHz / NanGate │ lower rate / Sky130)
-│  IIR NOTCH (2.4 MHz)  →  IIR NOTCH (5 MHz)         │
-│  CIC DECIMATOR  (order-4, D = 1 … 16)               │
+                           │
+                           │ 6 MHz
+                           ▼
+             Gray-code Asynchronous FIFO
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│  IIR NOTCH 2.4 MHz  →  IIR NOTCH 5 MHz              │
+│  CIC DECIMATOR, order 4, D = 1 … 16                 │
 └─────────────────────────────────────────────────────┘
     │
     ▼
-Output  6/D MHz
+Output 6/D MHz
 ```
 
-**Key specifications:**
+The design operates across two clock domains:
 
-| Parameter | Value |
-|---|---|
-| Input sample rate | 9 MHz |
-| Rate conversion | ×2 / ÷3 → 6 MHz (fractional 2/3) |
-| Data word width | 32-bit signed  —  s16.15 fixed-point |
-| FIR taps | 250 (Kaiser window, ≥ 81 dB stopband attenuation) |
-| FIR passband / stopband | 2.8 MHz / 3.2 MHz |
-| IIR notch frequencies | 2.4 MHz and 5 MHz |
-| CIC order / max decimation | N = 4 / D = 1–16 (runtime configurable) |
-| Clock domains | clk (fast path) + clk_1 (slow path) |
+- `clk` domain: high-rate fractional conversion path.
+- `clk_1` domain: lower-rate IIR notch filtering and CIC decimation path.
+
+A valid-signal handshake propagates through the datapath so each block only processes real samples when valid data is available.
 
 ---
 
-## 3. Signal Processing Design
+## Signal Processing Blocks
 
-### 3.1 System Architecture
+### Fractional Rate Converter
 
-The DFE operates across **two clock domains** separated by a Gray-code asynchronous FIFO:
+The fractional rate converter converts the input sample rate from 9 MHz to 6 MHz using an upsample-filter-downsample structure:
 
-- **clk domain** — handles the high-rate path: upsample, FIR filter, downsample
-- **clk_1 domain** — handles the low-rate path: IIR notch filters, CIC decimator
-
-A valid-signal handshake (`din_valid` / `dout_valid`) flows through every block so the downstream module only processes data when a real sample is present.
-
-### 3.2 Block 1 — Upsampler
-
-**File:** `Interpolation.sv`
-
-Inserts `L − 1 = 1` zero sample between each real input sample to raise the sampling rate from 9 MHz to 18 MHz. A 1-bit counter (`zero_count`) drives the output valid signal for all `L` output cycles.
-
-```
-din_valid ──▶  [ real sample ]──▶ dout_valid (cycle 0)
-               [ zero insert ]──▶ dout_valid (cycle 1)
-               [ wait...     ]──▶ dout_valid = 0
+```text
+9 MHz ×2 → 18 MHz → FIR anti-alias filter → ÷3 → 6 MHz
 ```
 
-- Upsampling factor `L` is a Verilog parameter (default 2)
-- Zero-insertion is computationally free but creates spectral images at multiples of Fs — removed by the downstream FIR
+Implemented blocks:
 
-### 3.3 Block 2 — FIR Anti-Alias Filter
+- `Interpolation.sv` — inserts zero samples for ×2 upsampling.
+- `FIR.sv` — 250-tap anti-alias lowpass FIR filter.
+- `Decimator.sv` — keeps every third FIR output sample.
 
-**File:** `FIR.sv`
+### FIR Filter
 
-A 250-tap, fully-pipelined direct-form FIR lowpass filter. All 250 multiply-accumulate operations are pipelined in parallel to maximise clock frequency.
-
-**Architecture:**
-
-```
-Stage 1 │ Shift register  — 250 samples of 32-bit delay line
-Stage 2 │ Parallel multiply — 250 products computed in one cycle
-Stage 3 │ Tree accumulation — pipeline of additions
-Stage 4 │ Normalise — right-shift by COEFF_FRAC = 15 bits
-```
-
-**Internal widths** prevent overflow:
-
-```
-ACC_WIDTH = DATA_WIDTH + COEFF_WIDTH + ⌈log₂(TAPS)⌉
-          = 32         + 32          + 8
-          = 72 bits
-```
-
-**Coefficient loading:**
-
-```verilog
-initial $readmemh("coeffs.hex", h);   // 250 × 32-bit s16.15 words
-```
-
-The `valid_pipe[TAPS:0]` shift register propagates the enable flag through all 250 pipeline stages so `dout_valid` precisely tracks the latency.
+The FIR filter is a 250-tap fixed-point lowpass filter.
 
 | Parameter | Value |
 |---|---|
 | Taps | 250 |
-| Window | Kaiser (`scipy.signal.kaiserord`) |
-| Stopband attenuation | ≥ 81 dB |
-| Passband edge fp | 2.8 MHz |
-| Stopband edge fs | 3.2 MHz |
-| Coefficient format | s16.15  (32-bit signed, ×2¹⁵) |
-| Accumulator | 72-bit signed |
+| Window | Kaiser |
+| Stopband attenuation | ≥81 dB |
+| Passband edge | 2.8 MHz |
+| Stopband edge | 3.2 MHz |
+| Coefficient format | s16.15 |
+| Accumulator width | 72 bits |
 
-### 3.4 Block 3 — Downsampler
+The FIR block dominates area because it uses a highly parallel datapath.
 
-**File:** `Decimator.sv`
+### Asynchronous FIFO
 
-A modulo-M counter selects every Mth FIR output sample and discards the rest. Together with the upsampler this realises the exact **2/3 fractional rate**:
-
-```
-9 MHz  ×2  →  18 MHz  ÷3  →  6 MHz
-```
-
-The counter width is `$clog2(M)` bits, making the block fully parameterised.
-
-### 3.5 Block 4 — Asynchronous FIFO
-
-**File:** `FIFO.sv`
-
-A dual-clock FIFO bridges the `clk → clk_1` clock domain crossing. Both the write pointer (`wr_ptr`) and read pointer (`rd_ptr`) are maintained in **Gray code** and synchronised across the domain boundary with 2-stage flip-flop chains to eliminate metastability.
-
-```
-clk domain (write)            clk_1 domain (read)
-──────────────────            ───────────────────
-wr_ptr_bin  → Gray            rd_ptr_bin  → Gray
-wr_ptr_gray ──2FF──▶ sync     rd_ptr_gray ──2FF──▶ sync
-                      │                            │
-                      └────── empty detect ────────┘
-```
+A Gray-code asynchronous FIFO bridges the `clk` and `clk_1` domains.
 
 | Parameter | Value |
 |---|---|
-| Depth | 2^ADDR_WIDTH = 16 entries |
-| Width | 32 bits signed |
-| Write clock | clk |
-| Read clock | clk_1 |
-| CDC mechanism | Gray-code + 2-FF synchroniser |
+| Depth | 16 entries |
+| Data width | 32 bits |
+| Write clock | `clk` |
+| Read clock | `clk_1` |
+| CDC style | Gray-code pointers + 2FF synchronizers |
 
-### 3.6 Block 5 — IIR Dual-Notch Filter Bank
+### Dual IIR Notch Filters
 
-**Files:** `IIR.sv`, `IIR_top.sv`
+Two second-order IIR notch filters are cascaded to suppress interfering tones.
 
-Two second-order IIR **resonator notch** filters are cascaded to suppress two interfering tones. Each stage implements the bilinear resonator structure:
+| Stage | Frequency | Notes |
+|---|---:|---|
+| Stage 1 | 2.4 MHz | Direct notch target |
+| Stage 2 | 5.0 MHz | Discrete-time / alias-domain suppression |
 
-```
-y[n]  =  x[n]  +  z1[n]
+> The 5 MHz interferer is represented in the 6 MHz sampled domain through its discrete-time equivalent / alias component.
 
-z1[n] = 2R·cos(θ)·y[n] − 2·cos(θ)·x[n] + z2[n]
-z2[n] = x[n] − R²·y[n]
-```
+### CIC Decimator
 
-All multiplications use **32×32 → 64-bit** intermediates. Results are truncated to S1.30 by taking bits `[62:31]` or `[63:32]`. State variables `z1` (37-bit) and `z2` (35-bit) carry extra guard bits to prevent saturation.
+The CIC block is a 4th-order Cascaded Integrator-Comb decimator with runtime-programmable decimation ratio.
 
-**Notch parameters:**
-
-| Stage | Frequency | cos(θ) | S1.30 integer |
-|---|---|---|---|
-| 1 | 2.4 MHz | cos(2π × 2.4/6) = 0.5 | 536 870 912 |
-| 2 | 5.0 MHz | cos(2π × 5/6) ≈ −0.866 | −868 675 383 |
-| Both | — | R = 0.95 | 1 020 054 732 |
-
-The pole radius `R` and angle `cos(θ)` are **elaboration-time parameters**, making the notch frequencies fully configurable without RTL changes.
-
-### 3.7 Block 6 — CIC Decimator
-
-**File:** `CIC.sv`
-
-A 4th-order Cascaded Integrator-Comb filter with **runtime-programmable** decimation ratio `D` (1–16). Internal register width is automatically computed to prevent overflow for any valid D:
-
-```
-REGWIDTH = INPUTWIDTH + N × ⌈log₂(MAX_D)⌉
-         = 32         + 4 × 4
-         = 48 bits
-```
-
-**Architecture:**
-
-```
-Integrator section (full rate)          Comb section (÷D rate)
-──────────────────────────────          ──────────────────────
-d_in → Σ → Σ → Σ → Σ → [÷D] →         Δ → Δ → Δ → Δ → d_out
-       d1   d2   d3   d4   count        d5   d6   d7   d8
-```
-
-The output is right-shifted by `N × log₂D` to compensate for CIC passband gain of `D^N`. The shift amount is computed by a combinational `case` statement on `D` to avoid synthesis issues with `$clog2` in runtime expressions.
-
-### 3.8 Fixed-Point Arithmetic
-
-All data paths use a consistent fixed-point convention:
-
-| Signal / Coefficient | Format | Bits | Scale |
-|---|---|---|---|
-| Input / output samples | s16.15 | 32 | ×2¹⁵ = 32 768 |
-| FIR coefficients | s16.15 | 32 | ×2¹⁵ — from coeffs.hex |
-| FIR accumulator | extended | 72 | Prevents 250-tap overflow |
-| IIR pole radius R, cos(θ) | S1.30 | 32 | ×2³⁰ |
-| IIR multiplier intermediates | 64-bit | 64 | Truncated to [62:31] |
-| IIR state z1 | extended | 37 | Guard bits vs. saturation |
-| IIR state z2 | extended | 35 | Guard bits vs. saturation |
+| Parameter | Value |
+|---|---|
+| Order | 4 |
+| Decimation ratio | D = 1–16 |
+| Input width | 32 bits |
+| Internal width | 48 bits |
 
 ---
 
-## 4. Python Verification
+## Fixed-Point Arithmetic
 
-### 4.1 Verification Flow
+All data paths use fixed-point arithmetic.
 
-The Python script (`Fractional_Decimation_.py`) is both the **golden reference model** and the **test-bench generator**. It models the entire chain at floating-point precision, quantises to fixed-point, generates RTL stimulus files, and compares the RTL simulation output back against the reference.
+| Signal / Coefficient | Format | Bits |
+|---|---|---:|
+| Input / output samples | s16.15 | 32 |
+| FIR coefficients | s16.15 | 32 |
+| FIR accumulator | Extended | 72 |
+| IIR coefficients | S1.30 | 32 |
+| IIR multiplier intermediates | Signed | 64 |
+| CIC internal registers | Extended | 48 |
 
-```
-① Generate multi-tone signal  (9 MHz, 3 ms, 6 tones)
-        ↓
-② Design FIR  (kaiserord: 81 dB, Δf=400 kHz, 250 taps)
-        ↓
-③ Model chain  (upsample ×2  →  lfilter  →  downsample ×3)
-        ↓
-④ Quantise to s16.15  (round, clip to ±2³¹)
-        ↓
-⑤ Write files:  stimulus_input.txt  ·  coeffs.hex  ·  python_output.txt
-        ↓
-⑥ [Run RTL simulation → verilog_output.txt]
-        ↓
-⑦ Compare:  SNR  ·  max/RMS error  ·  cross-correlation  ·  FFT overlay
-```
+---
 
-### 4.2 Test Signal
+## Python Verification
 
-The test signal combines six sinusoids to exercise every part of the filter chain simultaneously:
+The Python script acts as both:
 
-| Tone | Frequency | Expected After DFE |
-|---|---|---|
-| f₁ | 400 kHz | ✅ Passed — in FIR passband |
-| f₂ | 700 kHz | ✅ Passed — in FIR passband |
-| f₃ | 1.0 MHz | ✅ Passed — in FIR passband |
-| f₄ | 1.2 MHz | ✅ Passed — in FIR passband |
-| f₅ | 2.4 MHz | ❌ Notched — IIR Stage 1 target |
-| f₆ | 5.0 MHz | ❌ Notched — IIR Stage 2 target + FIR alias |
+- A golden reference model.
+- A testbench stimulus generator.
 
-### 4.3 Filter Design
+### Verification Flow
 
-```python
-from scipy.signal import firwin, kaiserord
-
-fs_up  = 18e6          # Upsampled rate
-fp     = 2.8e6         # Passband edge
-fs_    = 3.2e6         # Stopband edge
-att_db = 81.0          # Minimum stopband attenuation
-
-nyq    = fs_up / 2.0
-delta  = (fs_ - fp) / nyq
-N, beta = kaiserord(att_db, delta)   # Determines taps and window shape
-cutoff  = (fp + fs_) / 2.0
-h = firwin(250, cutoff / nyq, window=('kaiser', beta))
+```text
+1. Generate multi-tone input signal at 9 MHz
+2. Design FIR coefficients using scipy.signal
+3. Model the full DFE chain in Python
+4. Quantize samples and coefficients to fixed-point
+5. Generate RTL input files
+6. Run RTL simulation
+7. Compare RTL output against Python reference
+8. Report SNR, error metrics, correlation, and FFT overlays
 ```
 
-Coefficients are then quantised to s16.15 and written to `coeffs.hex`:
+### Test Signal
 
-```python
-def float_to_s16_15(x):
-    return np.clip(np.round(x * 32768.0), -2**31, 2**31-1).astype(np.int32)
+The test signal combines multiple tones to exercise passband behavior, notch filtering, and decimation behavior.
 
-with open("coeffs.hex", "w") as f:
-    for v in h_s16_15:
-        f.write("{:08x}\n".format(np.uint32(np.int32(v)).item()))
-```
+| Tone | Frequency | Expected Behavior |
+|---|---:|---|
+| f1 | 400 kHz | Passed |
+| f2 | 700 kHz | Passed |
+| f3 | 1.0 MHz | Passed |
+| f4 | 1.2 MHz | Passed |
+| f5 | 2.4 MHz | Notched |
+| f6 | 5.0 MHz | Notched / alias-domain suppression |
 
-### 4.4 Numerical Accuracy Metrics
+### Accuracy Metrics
 
-After RTL simulation, `compare_outputs()` computes:
+The comparison script reports:
 
-| Metric | Description |
-|---|---|
-| **SNR** | `10·log₁₀(signal_power / error_power)` — DC removed, startup stripped |
-| **Max absolute error** | `max │y_rtl[n] − y_python[n]│` |
-| **RMS error** | `√(mean(error²))` |
-| **Normalised cross-correlation** | `max(xcorr) / N` — confirms time alignment |
-| **FFT overlay** | 8192-point FFT at both 9 MHz and 3 MHz rates |
+- SNR.
+- Maximum absolute error.
+- RMS error.
+- Normalized cross-correlation.
+- FFT comparison between Python and RTL outputs.
 
-### 4.5 Running the Verification
+---
 
-**Step 1 — Generate stimulus and coefficients:**
+## ASIC Implementation Summary
+
+### NanGate 45nm — Synopsys ICC
+
+> NanGate 45nm results represent academic RTL-to-GDS implementation, not measured silicon.
+
+| Metric | Result |
+|---|---:|
+| Toolchain | Synopsys DC + ICC |
+| Target frequency | 166 MHz |
+| Setup slack | +1.04 ns |
+| Hold violations | 0 after CTS |
+| DRC | Clean |
+| LVS | Passed |
+| IR drop VDD / VSS | 12.45 mV / 12.75 mV |
+| Total cell area | 991,219 library units |
+
+### Sky130 — OpenROAD/OpenLane
+
+| Metric | Result |
+|---|---:|
+| Toolchain | Yosys + OpenROAD/OpenLane |
+| Target frequency | 71.4 MHz |
+| Setup slack | +4.09 ns |
+| Hold slack | +0.08 ns |
+| TNS | 0.00 ns |
+| DRC | Clean |
+| LVS | Passed |
+| Antenna violations | 0 |
+| Total power | 633 mW typical |
+| Design area | 5.05 mm² |
+
+---
+
+## Technology Comparison
+
+| Metric | NanGate 45nm ICC | Sky130 OpenROAD |
+|---|---:|---:|
+| Target frequency | 166 MHz | 71.4 MHz |
+| Worst setup slack | +1.04 ns | +4.09 ns |
+| Worst hold slack | 0 violations | +0.08 ns |
+| TNS | 0.00 ns | 0.00 ns |
+| DRC | Clean | Clean |
+| LVS | Passed | Passed |
+| Approximate area | ~0.30 mm² | ~5.05 mm² |
+| Voltage | 1.1 V | 1.8 V |
+| Toolchain | Synopsys DC + ICC | Yosys + OpenROAD/OpenLane |
+| PDK / library | NanGate 45nm | SkyWater Sky130 |
+
+---
+
+## How to Run
+
+### Python Reference Model
 
 ```bash
 pip install numpy scipy matplotlib
 python Fractional_Decimation_.py
-# Writes: stimulus_input.txt  coeffs.hex  python_output.txt
 ```
 
-**Step 2 — Run RTL simulation:**
+Generated files:
+
+```text
+stimulus_input.txt
+coeffs.hex
+python_output.txt
+```
+
+### RTL Simulation
+
+Example using Icarus Verilog:
 
 ```bash
-# With your simulator of choice (e.g. Icarus Verilog):
-iverilog -o dfe_sim FIR_IIR.sv tb_FIR_IIR.sv
+iverilog -g2012 -o dfe_sim FIR_IIR.sv tb_FIR_IIR.sv
 vvp dfe_sim
-# Writes: verilog_output.txt
 ```
 
-**Step 3 — Compare:**
+Expected output:
+
+```text
+verilog_output.txt
+```
+
+### Output Comparison
+
+Run the Python comparison flow after RTL simulation:
 
 ```bash
-# Run compare_outputs() inside the script:
 python Fractional_Decimation_.py
-# Prints SNR, max error, RMS error, correlation; opens waveform + FFT plots
+```
+
+The script reports:
+
+- SNR.
+- Maximum error.
+- RMS error.
+- Cross-correlation.
+- FFT overlays.
+
+---
+
+## Repository Structure
+
+```text
+DFE/
+├── rtl/
+│   ├── Interpolation.sv
+│   ├── FIR.sv
+│   ├── Decimator.sv
+│   ├── FIFO.sv
+│   ├── IIR.sv
+│   ├── IIR_top.sv
+│   ├── CIC.sv
+│   └── FIR_IIR.sv
+│
+├── python/
+│   ├── Fractional_Decimation_.py
+│   ├── stimulus_input.txt
+│   ├── coeffs.hex
+│   └── python_output.txt
+│
+├── tb/
+│   └── tb_FIR_IIR.sv
+│
+├── reports/
+│   ├── nangate45/
+│   └── sky130/
+│
+├── docs/
+│   ├── dsp_architecture.md
+│   ├── python_verification.md
+│   └── physical_design.md
+│
+└── README.md
 ```
 
 ---
 
-## 5. ASIC Implementation — NanGate 45nm (Synopsys ICC)
+## Limitations and Future Work
 
-### 5.1 Synthesis Results
-
-**Tool:** Synopsys Design Compiler G-2012.06-SP2  
-**Library:** NangateOpenCellLibrary_ss0p95vn40c (slow-slow, 0.95 V, −40 °C)
-
-| Metric | Value |
-|---|---|
-| Total cell area | 139 881 library units |
-| Leaf cells | 47 566 |
-| Sequential cells | 13 588 |
-| Combinational cells | 33 978 |
-| Buf / Inv cells | 4 619 |
-
-**Block-level area breakdown:**
-
-| Block | Module | Area | % |
-|---|---|---|---|
-| Fractional Decimator | `Fractional_decimetor` | 118 815 | **84.9%** |
-| IIR Dual Notch | `IIR_top` | 8 953 | 6.4% |
-| CIC Decimator | `CIC` | 7 324 | 5.2% |
-| Async FIFO | `fifo` | 4 789 | 3.4% |
-| **TOTAL** | `FIR_IIR` | **139 881** | 100% |
-
-The FIR filter dominates area (≈85% of the fractional decimator) due to 250 parallel product registers and a deep tree accumulation.
-
-**Post-synthesis timing:**
-
-| Domain | Period | Critical Path | Setup Slack | Hold Violations |
-|---|---|---|---|---|
-| clk | 6.00 ns (166 MHz) | 4.90 ns | +0.72 ns ✅ | 12 668 (pre-CTS) |
-| clk_1 | 18.00 ns (55 MHz) | 7.68 ns | +9.93 ns ✅ | 909 (pre-CTS) |
-
-> The pre-CTS hold violations are expected and are fully resolved by CTS buffer insertion during place-and-route.
-
-### 5.2 Place-and-Route
-
-**Tool:** Synopsys IC Compiler G-2012.06-ICC-SP2  
-**Parasitic extraction:** StarRC / StarXtract — RealRC mode, MIN_MAX model, −40/−40/−40 derate  
-**SI analysis:** Delta-delay computation + static-noise analysis enabled. Crosstalk prevention threshold: 0.35×VDD
-
-The clock tree was synthesised to resolve all pre-CTS hold violations. Post-CTS buffer insertion dominates the increase in cell count from synthesis to PnR:
-
-| Metric | Post-Synthesis | Post-Route |
-|---|---|---|
-| Total cell area | 139 881 | 991 219 |
-| Leaf cells | 47 566 | 739 421 |
-| Buf / Inv cells | 4 619 | **596 421** (CTS) |
-| Sequential cells | 13 588 | 45 824 |
-| Net wire length | — | 6 774 203 units |
-
-### 5.3 Timing Sign-Off
-
-Post-route timing was verified at the worst-case SS 0.95 V −40 °C corner with full LPE parasitics:
-
-| Metric | clk (166 MHz) |
-|---|---|
-| Critical path | 4.60 ns |
-| Setup slack | **+1.04 ns ✅** |
-| Logic levels | 112 |
-| Total negative slack | **0.00 ns ✅** |
-| Hold violations | **0 ✅** (resolved by CTS) |
-| Nets with DRC violations | **0 ✅** |
-| Max Trans / Max Cap | **0 / 0 ✅** |
-
-### 5.4 Physical Verification
-
-| Check | Tool | Result |
-|---|---|---|
-| DRC | Synopsys ICC | 0 violations ✅ |
-| LVS | Synopsys ICC Netgen | PASSED — 0 short / 0 open / 0 electrical errors ✅ |
-| Antenna | — | 0 violations ✅ |
-| Via optimisation | Synopsys ICC | 97.15% double-via rate (3.25M / 3.34M vias) ✅ |
-
-LVS confirmed zero errors across all 16 metal layers:
-
-```
-Total SHORT Nets:                    0
-Total OPEN Nets:                     0
-Total Electrical Equivalent Errors:  0
-Total Must-Joint Errors:             0
-```
-
-### 5.5 IR Drop & Noise
-
-**IR drop — VDD / VSS (target: 22 mV):**
-
-| Net | IR Drop | Status |
-|---|---|---|
-| VDD | 12.45 mV | ✅ well within 22 mV target |
-| VSS | 12.75 mV | ✅ well within 22 mV target |
-
-Power grid: metal9/10 rings (1.6 µm wide) + 30 straps per layer (0.8 µm average).  
-Routing track usage: VDD 21% on metal10, 20% on metal9.
-
-**Static noise analysis:**
-
-All pins passed the ±0.35×VDD (0.33 V) noise threshold. The only pins at zero slack are exactly on the boundary — no failures.
+- The DFE was verified using Python reference comparison and RTL simulation; larger randomized fixed-point regression could further improve confidence.
+- The FIR implementation is fully parallel and area-heavy; future work could explore folded or time-multiplexed FIR architectures.
+- Sky130 power is dominated by combinational logic in the 250-tap FIR path; future work includes clock gating and coefficient-symmetry optimization.
+- The CDC path uses a Gray-code asynchronous FIFO; additional formal CDC verification is planned.
+- NanGate 45nm flow represents academic RTL-to-GDS implementation, not measured silicon.
+- Sky130 implementation achieved clean DRC/LVS and competition tape-out readiness, but measured post-silicon results are not included here.
 
 ---
 
-## 6. ASIC Implementation — Sky130 130nm (OpenROAD)
+## Keywords
 
-### 6.1 OpenLane Configuration
-
-The identical RTL was re-targeted to the SkyWater Sky130 130nm open-source PDK with the following key settings:
-
-```json
-{
-  "DESIGN_NAME":     "TOP",
-  "CLOCK_PORT":      "clk",
-  "CLOCK_PERIOD":    "14.0",
-  "SYNTH_STRATEGY":  "AREA 3",
-  "FP_CORE_UTIL":    20
-}
-```
-
-Pin placement (`pin_order.cfg`):
-
-| Edge | Pins | Min pitch |
-|---|---|---|
-| North | `data_in[*]`, `D[*]`, `rst_n` | 0.5 µm |
-| South | `data_out[*]` | 0.5 µm |
-| East | `clk` | 0.9 µm |
-| West | `clk_1` | 0.3 µm |
-
-**OpenLane flow stages:**
-
-```
-Synthesis (Yosys)  →  Floorplan (init_fp)  →  Placement (OpenDP)
-    →  CTS (TritonCTS)  →  Global Route (FastRoute)
-    →  Detailed Route (TritonRoute)  →  DRC (Magic)  →  LVS (Netgen)  →  GDSII
-```
-
-### 6.2 Timing Sign-Off
-
-**Tool:** OpenROAD STA  
-**Target clock:** 14.0 ns (71.4 MHz)  
-**SDC:** Asynchronous clock groups with explicit false paths between clk and clk_1 (CDC handled by FIFO)
-
-| Metric | Post-GRT | Post-Route (Final) |
-|---|---|---|
-| Worst slack — Setup | 3.79 ns ✅ | **4.09 ns ✅** |
-| Worst slack — Hold | 0.01 ns ✅ | **0.08 ns ✅** |
-| Total negative slack (TNS) | 0.00 ✅ | **0.00 ✅** |
-| Violating paths | 0 | **0 ✅** |
-| Clock skew — clk | 0.24 ns | 0.24 ns |
-| Clock skew — clk_1 | 0.26 ns | 0.26 ns |
-
-Clock uncertainty was set conservatively for Sky130:
-```tcl
-set_clock_uncertainty 0.4  [get_clocks clk]
-set_clock_uncertainty 0.7  [get_clocks clk_1]
-```
-
-### 6.3 Power Analysis
-
-**Corner:** Typical  
-**Tool:** OpenROAD report_power
-
-| Group | Internal | Switching | Leakage | Total | % |
-|---|---|---|---|---|---|
-| Sequential | 56.4 mW | 2.5 mW | < 1 µW | 58.9 mW | 9.3% |
-| **Combinational** | **316 mW** | **258 mW** | ~4 µW | **574 mW** | **90.7%** |
-| **TOTAL** | 373 mW | 260 mW | 4.09 µW | **633 mW** | 100% |
-
-Combinational logic dominates at 90.7%, driven by the 250-tap FIR MAC tree.  
-Switching power (41% of total) reflects high toggle activity in the shift-register delay line.
-
-**Design area:**
-
-| Metric | Value |
-|---|---|
-| Design area | 5 046 736 µm² (5.05 mm²) |
-| Core utilisation | 20% |
-| Estimated die size | ~2.25 mm × 2.25 mm |
-| Total cells | 702 816 |
-| Flip-flops | 18 593 (2.6%) |
-| Combinational cells | 684 223 (97.4%) |
-| Technology | SkyWater Sky130  130nm |
-
-### 6.4 Physical Verification
-
-| Check | Tool | Result |
-|---|---|---|
-| DRC | Magic VLSI | **No DRC violations after GDS streaming out ✅** |
-| LVS | Netgen | **PASSED — 0 errors ✅** |
-| Antenna violations | OpenLane antenna check | **0 ✅** |
-
-```
-[INFO]: Running Magic DRC (log: .../signoff/4-drc.log)...
-[INFO]: Converting Magic DRC database to various tool-readable formats...
-[INFO]: No DRC violations after GDS streaming out.
-```
-
----
-
-## 7. Technology Comparison
-
-| Metric | NanGate 45nm (ICC) | Sky130 130nm (OpenROAD) |
-|---|---|---|
-| **Target frequency** | 166 MHz | 71.4 MHz |
-| **Setup slack (worst)** | +1.04 ns ✅ | +4.09 ns ✅ |
-| **Hold slack (worst)** | 0.00 ns ✅ | +0.08 ns ✅ |
-| **TNS** | 0.00 ✅ | 0.00 ✅ |
-| **Clock skew — clk** | < 0.27 ns | 0.24 ns |
-| **DRC violations** | 0 ✅ | 0 ✅ |
-| **LVS** | PASS ✅ | PASS ✅ |
-| **Die area** | ~0.30 mm² | ~5.05 mm² |
-| **Area ratio** | 1× | **16.8× larger** |
-| **Core utilisation** | ~80–90% | 20% |
-| **Total power** | Not reported | 633 mW (typical) |
-| **IR drop VDD/VSS** | 12.45 / 12.75 mV ✅ | Not reported |
-| **Voltage** | 1.1 V | 1.8 V |
-| **Toolchain** | Synopsys DC + ICC (commercial) | Yosys + OpenROAD (free/open) |
-| **PDK access** | Commercial license | Open-source (SKY130) |
-
-**Area scaling explanation:**
-
-```
-Geometric scaling:  (130 / 45)² = 8.35×
-Actual ratio:       16.8×
-─────────────────────────────────────────
-Difference (~2×) explained by:
-  • Sky130 run at 20% utilisation (vs ~85% NanGate)
-  • Different CTS strategy (less aggressive hold fixing)
-  • 130nm standard cells have larger minimum feature size
-```
-
----
-
-## 8. Key Results Summary
-
-```
-╔══════════════════════════════════════════════════════════════════════╗
-║                    DFE — SIGN-OFF SUMMARY                           ║
-╠══════════════════════════════╦══════════════════════════════════════╣
-║  Design                      ║  Fractional DEC + IIR Notch + CIC   ║
-║  RTL Language                ║  SystemVerilog  (7 modules)          ║
-║  Verification                ║  Python golden model  →  SNR / xcorr ║
-╠══════════════════════════════╬══════════════════════════════════════╣
-║  NanGate 45nm  (ICC)         ║                                      ║
-║    Max frequency             ║  166 MHz                             ║
-║    Setup slack               ║  +1.04 ns  ✅                        ║
-║    Hold violations           ║  0  (CTS-resolved)  ✅               ║
-║    DRC / LVS                 ║  PASS  ✅                            ║
-║    IR drop  VDD / VSS        ║  12.45 / 12.75 mV  (target 22 mV) ✅║
-║    Total cell area           ║  991 219 lib units  (~0.30 mm²)      ║
-╠══════════════════════════════╬══════════════════════════════════════╣
-║  Sky130 130nm  (OpenROAD)    ║                                      ║
-║    Max frequency             ║  71.4 MHz                            ║
-║    Setup slack               ║  +4.09 ns  ✅                        ║
-║    Hold slack                ║  +0.08 ns  ✅                        ║
-║    DRC / LVS                 ║  PASS  ✅                            ║
-║    Total power               ║  633 mW  (90.7% combinational)       ║
-║    Design area               ║  5 046 736 µm²  (5.05 mm²  @ 20%)   ║
-╚══════════════════════════════╩══════════════════════════════════════╝
-```
+`Digital Front-End` `DFE` `SystemVerilog` `DSP` `Fixed-Point` `FIR Filter` `IIR Notch Filter` `CIC Decimator` `Clock Domain Crossing` `Asynchronous FIFO` `ASIC Design` `RTL-to-GDS` `OpenROAD` `OpenLane` `Sky130` `NanGate45` `Synopsys ICC` `Python Verification` `Digital IC Design`
