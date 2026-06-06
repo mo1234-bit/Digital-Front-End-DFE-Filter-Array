@@ -114,7 +114,7 @@ The FIR filter is a 250-tap fixed-point lowpass filter.
 | Coefficient format | s16.15 |
 | Accumulator width | 72 bits |
 
-The FIR block dominates area because it uses a highly parallel datapath.
+The FIR filter is implemented using a highly parallel architecture to maximize throughput and simplify timing closure.
 
 ### Asynchronous FIFO
 
