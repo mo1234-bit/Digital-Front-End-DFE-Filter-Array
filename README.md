@@ -13,17 +13,22 @@ My main work focused on FIR/top-level RTL design and complete ASIC implementatio
 
 This project was developed as part of a team for the IEEE ISSC Alexandria competition.
 
+## My Contributions
+
+This project was developed as part of a team for the IEEE ISSC Alexandria competition.
+
 My main contributions were:
 
-- Designed and implemented the FIR filter RTL used in the fractional rate-conversion path.
-- Wrote and integrated the top-level RTL connecting the fractional rate converter, IIR notch filters, CIC decimator, asynchronous FIFO, and control interfaces.
+- Designed and implemented the FIR filter RTL used in the fractional  rate-conversion path — 250-tap Kaiser-window lowpass filter with 72-bit accumulator and configurable coefficient loading.
+- Designed and implemented the SPI-controlled register file, enabling runtime-programmable control of the CIC decimation ratio and filter configuration via SPI interface.
+- Wrote and integrated the top-level RTL connecting the fractional rate converter, IIR notch filters, CIC decimator, asynchronous FIFO, and SPI control interfaces.
 - Integrated my RTL blocks with team-developed DSP blocks, including the dual IIR notch filters and CIC decimator.
 - Verified the FIR/fractional-decimation datapath against a Python floating-point/fixed-point reference model.
-- Performed the full ASIC implementation flow using Synopsys ICC on NanGate 45nm, including synthesis, floorplanning, placement, CTS, routing, STA, DRC, LVS, and sign-off reporting.
-- Performed the full ASIC implementation flow using OpenLane/OpenROAD on Sky130, including synthesis, floorplanning, placement, CTS, routing, STA, DRC, LVS, and GDS generation.
+- Performed the full ASIC implementation flow using Synopsys ICC on NanGate 45nm — synthesis, floorplanning, placement, CTS, routing, STA, DRC, LVS, and sign-off reporting.
+- Performed the full ASIC implementation flow using OpenLane/OpenROAD on Sky130 — synthesis, floorplanning, placement, CTS, routing, STA, DRC, LVS, and GDS generation.
 - Contributed to timing/debug closure, physical verification, and final sign-off documentation.
 
-The project won the ASIC tape-out side prize in the IEEE ISSC Alexandria competition and ranked 4th in the main competition track.
+The project placed 4th out of 9 teams in the main IEEE ISSC Alexandria competition track and won the ASIC tape-out side prize.
 
 ---
 
@@ -311,35 +316,34 @@ The script reports:
 ## Repository Structure
 
 ```text
-DFE/
-├── rtl/
-│   ├── Interpolation.sv
-│   ├── FIR.sv
-│   ├── Decimator.sv
-│   ├── FIFO.sv
-│   ├── IIR.sv
-│   ├── IIR_top.sv
-│   ├── CIC.sv
-│   └── FIR_IIR.sv
+Digital-Front-End-DFE-Filter-Array/
 │
-├── python/
-│   ├── Fractional_Decimation_.py
-│   ├── stimulus_input.txt
-│   ├── coeffs.hex
-│   └── python_output.txt
+├── Design/                    # RTL design files
+│   ├── Interpolation.sv       # ×2 upsampler
+│   ├── FIR.sv                 # 250-tap Kaiser lowpass FIR filter
+│   ├── Decimator.sv           # ÷3 downsampler
+│   ├── FIFO.sv                # Gray-code async FIFO (CDC bridge)
+│   ├── IIR.sv                 # Second-order IIR notch filter
+│   ├── IIR_top.sv             # Dual IIR cascade (2.4 MHz + 5 MHz)
+│   ├── CIC.sv                 # 4th-order CIC decimator, D=1–16
+│   ├── SPI_reg_file.sv        # SPI-controlled register file
+│   └── FIR_IIR.sv             # Top-level integration
 │
-├── tb/
-│   └── tb_FIR_IIR.sv
+├── Python/                    # Python reference model and verification
+│   ├── Fractional_Decimation_.py  # Golden model + RTL comparison
+│   ├── stimulus_input.txt     # Generated test stimulus
+│   ├── coeffs.hex             # FIR coefficient file
+│   └── python_output.txt      # Python reference output
 │
-├── reports/
-│   ├── nangate45/
-│   └── sky130/
+├── ASIC/                      # ASIC implementation results
+│   ├── NanGate45/             # Synopsys ICC flow — 166 MHz
+│   │   ├── reports/           # Timing, area, DRC, LVS reports
+│   │   └── ...
+│   └── Sky130/                # OpenLane flow — 71.4 MHz
+│       ├── reports/           # Timing, area, DRC, LVS reports
+│       └── ...
 │
-├── docs/
-│   ├── dsp_architecture.md
-│   ├── python_verification.md
-│   └── physical_design.md
-│
+├── LICENSE
 └── README.md
 ```
 
