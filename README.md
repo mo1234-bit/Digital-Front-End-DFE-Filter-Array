@@ -13,10 +13,6 @@ My main work focused on FIR/top-level RTL design and complete ASIC implementatio
 
 This project was developed as part of a team for the IEEE ISSC Alexandria competition.
 
-## My Contributions
-
-This project was developed as part of a team for the IEEE ISSC Alexandria competition.
-
 My main contributions were:
 
 - Designed and implemented the FIR filter RTL used in the fractional  rate-conversion path — 250-tap Kaiser-window lowpass filter with 72-bit accumulator and configurable coefficient loading.
